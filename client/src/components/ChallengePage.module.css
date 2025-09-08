@@ -1,0 +1,161 @@
+.pageContainer {
+  width: 100vw;
+  height: 100vh;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  background-position: center;
+  padding: 30px;
+  display: flex;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.mainContent {
+  flex-grow: 1; 
+  position: relative;
+}
+
+.challengeBox {
+  background-color: rgba(230, 245, 255, 0.9);
+  border: 3px solid #004d99;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px;
+}
+
+.header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.header span {
+  background-color: #cce0ff;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.9em;
+}
+
+.description {
+  margin: 15px 0;
+}
+
+.downloadLink {
+  display: block;
+  margin-top: 10px;
+  color: #004d99;
+}
+
+.flagForm {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.flagInput {
+  flex-grow: 1;
+  padding: 8px;
+}
+.submitButton {
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.hintArea {
+  position: absolute;
+  bottom: 40%;
+  left: 30%;
+}
+.hintMascot {
+  width: 64px; 
+  cursor: pointer;
+}
+.hintBox {
+  background-color: white;
+  border: 2px solid black;
+  padding: 15px;
+  margin-top: -20px; /* Overlap with the mascot slightly */
+  max-width: 300px;
+  border-radius: 5px;
+}
+
+.legend {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background-color: rgba(255, 250, 230, 0.85);
+  border: 2px solid #8B4513;
+  padding: 15px;
+  border-radius: 5px;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* --- Webshell Styles --- */
+.webshellToggle {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) rotate(-90deg);
+  transform-origin: bottom right;
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.webshellContainer {
+  width: 50%; /* Takes up half the screen */
+  height: 100vh;
+  background-color: #1e1e1e;
+  position: fixed;
+  top: 0;
+  right: -50%; /* Start off-screen */
+  transition: right 0.3s ease-in-out;
+  z-index: 99;
+  padding: 20px;
+  color: white;
+  box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+}
+.webshellContainer.visible {
+  right: 0; /* Slide into view */
+}
+
+.mascotContainer {
+  position: relative; /* Anchor for the speech bubble */
+  cursor: pointer;
+  width: 64px; /* Same as the mascot */
+  height: 64px;
+}
+
+.hintMascot {
+  width: 100%;
+}
+
+.speechBubble {
+  position: absolute;
+  width: 32px;
+  top: 0;
+  right: -15px; 
+}
+
+.hintBox {
+  background-color: white;
+  border: 2px solid black;
+  padding: 15px;
+  margin: 10px 0 0 -50px; /* Position it relative to the container */
+  max-width: 300px;
+  border-radius: 5px;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+}

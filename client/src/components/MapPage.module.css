@@ -1,0 +1,90 @@
+.pageWrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; 
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover; 
+  background-position: center;
+  opacity: 0.75; 
+  z-index: 1; 
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2; 
+}
+
+.challengePoint {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.flagIcon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  image-rendering: pixelated;
+}
+.flagIcon:hover {
+  filter: drop-shadow(0 0 8px yellow);
+}
+
+.infoIcon {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 32px;
+  cursor: pointer;
+}
+
+.header {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #333;
+  font-size: 2.5em;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.watchStory {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  cursor: pointer;
+}
+
+.legend {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background-color: rgba(255, 250, 230, 0.85);
+  border: 2px solid #8B4513;
+  padding: 15px;
+  border-radius: 5px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.icon {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+}

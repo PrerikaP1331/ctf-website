@@ -1,0 +1,129 @@
+require('dotenv').config();
+const mongoose = require('mongoose');
+const Challenge = require('./models/Challenge.js');
+
+const challengesToCreate = [-
+  {
+    challengeId: 1,
+    name: 'Welcome Aboard!',
+    description: 'A simple warm-up to get your sea legs. The flag is given to you in the description!',
+    category: 'General',
+    difficulty: 'Welcome',
+    points: 0,
+    flag: 'flag{w3lc0m3_t0_s4ns_s3r1ff3}',
+    position: { top: '25%', left: '65%' } // Top right
+  },
+  {
+    challengeId: 2,
+    name: 'Ancient Runes',
+    description: 'This strange text was found carved into a rock. Can you decipher it? ZmxhZ3tiNHMzXzY0X2lzX24wdF9zM2NyM3R9',
+    category: 'Cryptography',
+    difficulty: 'Warm-up',
+    points: 0,
+    flag: 'flag{b4s3_64_is_n0t_s3cr3t}',
+    position: { top: '45%', left: '70%' } // Middle right
+  },
+  {
+    challengeId: 3,
+    name: 'The Captain\'s Log',
+    description: 'The ship\'s captain left behind a password-protected log file. Can you get in?',
+    category: 'Forensics',
+    difficulty: 'Medium',
+    points: 100,
+    flag: 'flag{brut3_f0rc3_th3_w1n}',
+    position: { top: '65%', left: '80%' } // Bottom right
+  },
+  {
+    challengeId: 4,
+    name: 'Message in a Bottle',
+    description: 'We found a bottle with a note, but the ink is faded. Maybe there\'s another layer to this image?',
+    category: 'Steganography',
+    difficulty: 'Easy',
+    points: 50,
+    flag: 'flag{h1dd3n_1n_pl41n_s1ght}',
+    position: { top: '80%', left: '72%' } // Far bottom right
+  },
+
+  // ----- Left Island (Caissa Superiore) -----
+  {
+    challengeId: 5,
+    name: 'The Rickety Bridge',
+    description: 'This old login portal seems insecure. Can you bypass the authentication?',
+    category: 'Web',
+    difficulty: 'Easy',
+    points: 50,
+    flag: 'flag{sql_1nj3cti0n_ftw}',
+    position: { top: '15%', left: '30%' } // Top left
+  },
+  {
+    challengeId: 6,
+    name: 'A Strange Contraption',
+    description: 'We found a bizarre executable file. Can you reverse engineer it to find the secret key?',
+    category: 'Reverse Engineering',
+    difficulty: 'Hard',
+    points: 150,
+    flag: 'flag{r3v3rs1ng_1s_fun_r1ght?}',
+    position: { top: '35%', left: '45%' } // Top-middle left
+  },
+  {
+    challengeId: 7,
+    name: 'Ghost in the Shell',
+    description: 'Connect to our service and prove you are a true hacker.',
+    category: 'Pwn',
+    difficulty: 'Hard',
+    points: 150,
+    flag: 'flag{buff3r_0v3rfl0w_pwnz}',
+    position: { top: '20%', left: '15%' } // Far top left
+  },
+  {
+    challengeId: 8,
+    name: 'The Oracle\'s Chant',
+    description: 'We intercepted a strange audio file. Is it just noise, or is there a hidden message within the frequencies?',
+    category: 'Steganography',
+    difficulty: 'Medium',
+    points: 100,
+    flag: 'flag{sp3ctr0gr4m_s3cr3ts}',
+    position: { top: '60%', left: '20%' } // Middle-left
+  },
+  {
+    challengeId: 9,
+    name: 'The Busy Beaver',
+    description: 'This script is doing something odd. Can you analyze its behavior and find the flag?',
+    category: 'Scripting',
+    difficulty: 'Easy',
+    points: 50,
+    flag: 'flag{scr1pt_k1dd13_n0_m0r3}',
+    position: { top: '80%', left: '35%' } // Bottom left
+  },
+  {
+    challengeId: 10,
+    name: 'The Locksmith\'s Puzzle',
+    description: 'A series of cryptographic locks protect the treasure. Each one is harder than the last.',
+    category: 'Cryptography',
+    difficulty: 'Medium',
+    points: 100,
+    flag: 'flag{c43s4r_w4s_h3r3_2}',
+    position: { top: '55%', left: '40%' } // Bottom-middle left
+  }
+];
+
+const seedDatabase = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("MongoDB connected for challenge seeding.");
+
+    await Challenge.deleteMany({});
+    console.log("Existing challenges cleared.");
+
+    await Challenge.insertMany(challengesToCreate);
+    console.log(`${challengesToCreate.length} challenges have been successfully created!`);
+
+  } catch (error) {
+    console.error("Error during challenge seeding:", error);
+  } finally {
+    mongoose.connection.close();
+    console.log("MongoDB connection closed.");
+  }
+};
+
+seedDatabase();
