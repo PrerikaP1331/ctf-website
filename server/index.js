@@ -113,7 +113,11 @@ app.get('/api/challenge/:challengeId', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Challenge not found' });
     }
 
-    res.status(200).json({ success: true, challenge });
+    res.status(200).json({ 
+      success: true, 
+      challenge, 
+      publicApiUrl: process.env.PUBLIC_API_URL 
+    });
 
   } catch (error) {
     console.error("Error fetching single challenge data:", error);

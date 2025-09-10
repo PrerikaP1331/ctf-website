@@ -21,6 +21,7 @@ function ChallengePage() {
   const [flagInput, setFlagInput] = useState('');
   const [terminalUrl, setTerminalUrl] = useState('');
   const [isTerminalLoading, setIsTerminalLoading] = useState(false);
+  const [publicApiUrl, setPublicApiUrl] = useState('');
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -30,6 +31,7 @@ function ChallengePage() {
         const data = await response.json();
         if (data.success) {
           setChallenge(data.challenge);
+          setPublicApiUrl(data.publicApiUrl);
         } else {
           navigate('/map');
         }
@@ -129,9 +131,16 @@ function ChallengePage() {
             <span>{challenge.difficulty}</span>
           </div>
           <p className={styles.description}>{challenge.description}</p>
-          <a href="/files/placeholder.zip" download className={styles.downloadLink}>
-            &lt;&lt;Downloadable file&gt;&gt;
-          </a>
+          {challenge.downloadFile && (
+            <>
+              <a href={`${publicApiUrl}/files/${challenge.downloadFile}`} download className={styles.downloadLink}>
+                &lt;&lt;Download {challenge.downloadFile}&gt;&gt;
+              </a>
+              <p>
+                In webshell, use: <code>curl {publicApiUrl}/files/{challenge.downloadFile} -o {challenge.downloadFile}</code>
+              </p>
+            </>
+          )}
           <form onSubmit={handleFlagSubmit} className={styles.flagForm}>
             <input
               type="text"

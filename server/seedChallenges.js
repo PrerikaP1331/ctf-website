@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const Challenge = require('./models/Challenge.js');
 
-const challengesToCreate = [-
+const challengesToCreate = [
   {
     challengeId: 1,
     name: 'Welcome Aboard!',
@@ -11,6 +11,7 @@ const challengesToCreate = [-
     difficulty: 'Welcome',
     points: 0,
     flag: 'flag{w3lc0m3_t0_s4ns_s3r1ff3}',
+    downloadFile:'',
     position: { top: '25%', left: '65%' } // Top right
   },
   {
@@ -21,6 +22,7 @@ const challengesToCreate = [-
     difficulty: 'Warm-up',
     points: 0,
     flag: 'flag{b4s3_64_is_n0t_s3cr3t}',
+    downloadFile:'',
     position: { top: '45%', left: '70%' } // Middle right
   },
   {
@@ -31,6 +33,7 @@ const challengesToCreate = [-
     difficulty: 'Medium',
     points: 100,
     flag: 'flag{brut3_f0rc3_th3_w1n}',
+    downloadFile:'',
     position: { top: '65%', left: '80%' } // Bottom right
   },
   {
@@ -41,6 +44,7 @@ const challengesToCreate = [-
     difficulty: 'Easy',
     points: 50,
     flag: 'flag{h1dd3n_1n_pl41n_s1ght}',
+    downloadFile:'',
     position: { top: '80%', left: '72%' } // Far bottom right
   },
 
@@ -53,6 +57,7 @@ const challengesToCreate = [-
     difficulty: 'Easy',
     points: 50,
     flag: 'flag{sql_1nj3cti0n_ftw}',
+    downloadFile:'',
     position: { top: '15%', left: '30%' } // Top left
   },
   {
@@ -63,6 +68,7 @@ const challengesToCreate = [-
     difficulty: 'Hard',
     points: 150,
     flag: 'flag{r3v3rs1ng_1s_fun_r1ght?}',
+    downloadFile:'',
     position: { top: '35%', left: '45%' } // Top-middle left
   },
   {
@@ -73,6 +79,7 @@ const challengesToCreate = [-
     difficulty: 'Hard',
     points: 150,
     flag: 'flag{buff3r_0v3rfl0w_pwnz}',
+    downloadFile:'',
     position: { top: '20%', left: '15%' } // Far top left
   },
   {
@@ -83,6 +90,7 @@ const challengesToCreate = [-
     difficulty: 'Medium',
     points: 100,
     flag: 'flag{sp3ctr0gr4m_s3cr3ts}',
+    downloadFile:'',
     position: { top: '60%', left: '20%' } // Middle-left
   },
   {
@@ -93,6 +101,7 @@ const challengesToCreate = [-
     difficulty: 'Easy',
     points: 50,
     flag: 'flag{scr1pt_k1dd13_n0_m0r3}',
+    downloadFile:'',
     position: { top: '80%', left: '35%' } // Bottom left
   },
   {
@@ -103,6 +112,7 @@ const challengesToCreate = [-
     difficulty: 'Medium',
     points: 100,
     flag: 'flag{c43s4r_w4s_h3r3_2}',
+    downloadFile:'',
     position: { top: '55%', left: '40%' } // Bottom-middle left
   }
 ];
