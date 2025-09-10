@@ -93,17 +93,26 @@
 }
 
 /* --- Webshell Styles --- */
+/* REPLACE the old .webshellToggle */
 .webshellToggle {
   position: fixed;
-  top: 50%;
+  top: 40%; /* Adjust vertical position */
   right: 0;
-  transform: translateY(-50%) rotate(-90deg);
-  transform-origin: bottom right;
   background-color: #333;
   color: white;
-  padding: 10px 20px;
   cursor: pointer;
   z-index: 101;
+  padding: 10px 5px; /* Adjust padding */
+  border-radius: 5px 0 0 5px; /* Curve the corners */
+}
+
+/* ADD this new class */
+.toggleText {
+  display: block; /* Important for rotation */
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+  transform: rotate(180deg);
 }
 
 .webshellContainer {

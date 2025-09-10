@@ -196,18 +196,10 @@ function ChallengePage() {
       </div>
 
         {/* Webshell Toggle and Container */}
-        <div
-        className={styles.webshellToggle}
-        onClick={() => {
-            // Toggle the panel visibility
-            const newWebshellState = !showWebshell;
-            setShowWebshell(newWebshellState);
-            // If we are opening the panel and have no terminal yet, get one
-            if (newWebshellState && !terminalUrl) {
-            openTerminal();
-            }
-        }}
-        >
+        <div className={styles.webshellToggle} onClick={() => setShowWebshell(!showWebshell)}>
+          <span className={styles.toggleText}>
+            {showWebshell ? "Close Webshell" : "Open Webshell"}
+          </span>
         </div>
 
         <div className={`${styles.webshellContainer} ${showWebshell ? styles.visible : ''}`}>
