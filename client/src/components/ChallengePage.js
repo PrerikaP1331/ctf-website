@@ -1,17 +1,14 @@
-// client/src/components/ChallengePage.js
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import styles from './ChallengePage.module.css';
 
-// === IMPORT ALL ASSETS FROM THE SRC FOLDER ===
 import forestBg from '../images/background-forest.gif';
 import butterflyIcon from '../icons/butterfly.gif';
 import speechBubbleIcon from '../icons/speech-bubble.png';
 import homeIcon from '../icons/home.png';
 import leaderboardIcon from '../icons/leaderboard.png';
 import cheatsheetIcon from '../icons/cheatsheet.png';
-// ==========================================
+
 
 function ChallengePage() {
   const { challengeId } = useParams();
@@ -22,6 +19,8 @@ function ChallengePage() {
   const [showHint, setShowHint] = useState(false);
   const [showWebshell, setShowWebshell] = useState(false);
   const [flagInput, setFlagInput] = useState('');
+  const [terminalUrl, setTerminalUrl] = useState('');
+  const [isTerminalLoading, setIsTerminalLoading] = useState(false);
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -42,6 +41,49 @@ function ChallengePage() {
     };
     fetchChallenge();
   }, [challengeId, navigate]);
+
+    const openTerminal = async () => {
+    // Don't do anything if a terminal is already loading or loaded
+    if (terminalUrl || isTerminalLoading) return;
+
+    setIsTerminalLoading(true);
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch('http://localhost:5000/api/webshell/start', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+
+        if (data.url) {
+        setTerminalUrl(data.url); // Set the URL for the iframe
+        } else {
+        console.error("Failed to get terminal URL:", data.error);
+        }
+    } catch (err) {
+        console.error("Error fetching terminal:", err);
+    } finally {
+        setIsTerminalLoading(false);
+    }
+    };
+
+    const closeTerminal = async () => {
+    if (!terminalUrl) return; // No terminal to close
+
+    const token = localStorage.getItem('token');
+    try {
+        await fetch('http://localhost:5000/api/webshell/stop', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+        });
+    } catch (err) {
+        console.error("Error stopping terminal:", err);
+    } finally {
+        // Clear the URL regardless of success
+        setTerminalUrl('');
+        setShowWebshell(false); // Also close the panel
+    }
+    };
 
   const handleFlagSubmit = async (event) => {
     event.preventDefault();
@@ -144,15 +186,34 @@ function ChallengePage() {
         </div>
       </div>
 
-      {/* Webshell Toggle and Container */}
-      <div className={styles.webshellToggle} onClick={() => setShowWebshell(!showWebshell)}>
-        Open Webshell
-      </div>
-      <div className={`${styles.webshellContainer} ${showWebshell ? styles.visible : ''}`}>
-        <h2>Webshell</h2>
-        <p>Terminal will be loaded here.</p>
-        <button onClick={() => setShowWebshell(false)}>X</button>
-      </div>
+        {/* Webshell Toggle and Container */}
+        <div
+        className={styles.webshellToggle}
+        onClick={() => {
+            // Toggle the panel visibility
+            const newWebshellState = !showWebshell;
+            setShowWebshell(newWebshellState);
+            // If we are opening the panel and have no terminal yet, get one
+            if (newWebshellState && !terminalUrl) {
+            openTerminal();
+            }
+        }}
+        >
+        </div>
+
+        <div className={`${styles.webshellContainer} ${showWebshell ? styles.visible : ''}`}>
+        <div className={styles.webshellHeader}>
+            <span>Kali Linux Terminal</span>
+            {/* The "X" button now properly closes the session */}
+            <button onClick={closeTerminal}>X</button>
+        </div>
+        <div className={styles.webshellBody}>
+            {isTerminalLoading && <p>Loading Terminal...</p>}
+            {terminalUrl && !isTerminalLoading && (
+            <iframe src={terminalUrl} title="CTF Webshell Terminal"></iframe>
+            )}
+        </div>
+        </div>
     </div>
   );
 }
