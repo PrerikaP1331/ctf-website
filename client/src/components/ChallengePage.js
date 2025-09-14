@@ -221,6 +221,8 @@
 
 // export default ChallengePage;
 
+// client/src/components/ChallengePage.js
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import styles from './ChallengePage.module.css';
@@ -229,7 +231,6 @@ import forestBg from '../images/background-forest.gif';
 import butterflyIcon from '../icons/butterfly.gif';
 import speechBubbleIcon from '../icons/speech-bubble.png';
 import homeIcon from '../icons/home.png';
-import leaderboardIcon from '../icons/leaderboard.png';
 import cheatsheetIcon from '../icons/cheatsheet.png';
 
 function ChallengePage() {
@@ -269,6 +270,19 @@ function ChallengePage() {
     };
     fetchChallenge();
   }, [challengeId, navigate]);
+
+  // Prevent scroll chaining to the page only while panel is open
+  useEffect(() => {
+    const root = document.documentElement;
+    if (showWebshell) {
+      root.style.overscrollBehaviorY = 'none';
+    } else {
+      root.style.overscrollBehaviorY = '';
+    }
+    return () => {
+      root.style.overscrollBehaviorY = '';
+    };
+  }, [showWebshell]);
 
   const openTerminal = useCallback(async () => {
     if (terminalUrl || isTerminalLoading) return; // already running or starting
@@ -325,7 +339,6 @@ function ChallengePage() {
   };
 
   const handleHardClose = async () => {
-    // Close panel AND stop container
     setShowWebshell(false);
     await stopTerminal();
   };
@@ -425,21 +438,26 @@ function ChallengePage() {
         <div className={styles.legend}>
           <h3>Legend</h3>
           <Link to="/map" className={styles.legendItem}>
-            <span className={styles.icon} style={{ backgroundImage: `url(${homeIcon})` }}></span>
+            <span className={styles.icon} style={{ backgroundImage: `url(${homeIcon})` }} />
             <span>Home</span>
           </Link>
-          <a href="/leaderboard" target="_blank" rel="noopener noreferrer" className={styles.legendItem}>
-            <span className={styles.icon} style={{ backgroundImage: `url(${leaderboardIcon})` }}></span>
-            <span>Leaderboard</span>
-          </a>
-          <a href="/cheatsheet" target="_blank" rel="noopener noreferrer" className={styles.legendItem}>
-            <span className={styles.icon} style={{ backgroundImage: `url(${cheatsheetIcon})` }}></span>
+          {/* Leaderboard removed */}
+          <a
+            href="/cheatsheet"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.legendItem}
+          >
+            <span
+              className={styles.icon}
+              style={{ backgroundImage: `url(${cheatsheetIcon})` }}
+            />
             <span>Cheatsheet</span>
           </a>
         </div>
       </div>
 
-      {/* Side Toggle Button (sticks to the left edge of the panel) */}
+      {/* Side Toggle Button */}
       <button
         className={`${styles.webshellToggle} ${showWebshell ? styles.webshellToggleShifted : ''}`}
         onClick={handleTogglePanel}
@@ -455,23 +473,16 @@ function ChallengePage() {
       <div className={`${styles.webshellContainer} ${showWebshell ? styles.visible : ''}`}>
         <div className={styles.webshellHeader}>
           <span>Kali Linux Terminal</span>
-          <div className={styles.headerBtns}>
-            {/* Hard stop kills the container */}
-            <button onClick={handleHardClose} className={styles.closeBtn} title="Stop and close">
-              X
-            </button>
-          </div>
+          <button onClick={handleHardClose} className={styles.closeBtn} title="Stop and close">
+            X
+          </button>
         </div>
+
+        {/* Scroll host container; iframe scroll stays isolated */}
         <div className={styles.webshellBody}>
-          {isTerminalLoading && <p>Loading Terminal...</p>}
+          {isTerminalLoading && <p className={styles.statusMsg}>Loading Terminal...</p>}
           {terminalUrl && !isTerminalLoading && (
-            <iframe src={terminalUrl} title="CTF Webshell Terminal" />
-          )}
-          {!terminalUrl && !isTerminalLoading && showWebshell && (
-            <div className={styles.emptyState}>
-              <p>Terminal is not running.</p>
-              <button onClick={openTerminal} className={styles.restartBtn}>Start Terminal</button>
-            </div>
+            <iframe src={terminalUrl} title="CTF Webshell Terminal" className={styles.terminalFrame} />
           )}
         </div>
       </div>
@@ -480,3 +491,6 @@ function ChallengePage() {
 }
 
 export default ChallengePage;
+
+
+

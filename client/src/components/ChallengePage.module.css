@@ -7,12 +7,10 @@
   padding: 30px;
   display: flex;
   font-family: 'Courier New', Courier, monospace;
+  overflow: auto;                 /* page can scroll when clicking outside panel */
 }
 
-.mainContent {
-  flex-grow: 1;
-  position: relative;
-}
+.mainContent { flex-grow: 1; position: relative; }
 
 .challengeBox {
   background-color: rgba(230, 245, 255, 0.9);
@@ -22,106 +20,35 @@
   max-width: 500px;
 }
 
-.header {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-.header span {
-  background-color: #cce0ff;
-  padding: 5px 10px;
-  border-radius: 15px;
-  font-size: 0.9em;
-}
+.header { display: flex; gap: 10px; margin-bottom: 15px; }
+.header span { background-color: #cce0ff; padding: 5px 10px; border-radius: 15px; font-size: 0.9em; }
 
-.description {
-  margin: 15px 0;
-}
+.description { margin: 15px 0; }
+.downloadLink { display: block; margin-top: 10px; color: #004d99; }
 
-.downloadLink {
-  display: block;
-  margin-top: 10px;
-  color: #004d99;
-}
-
-.flagForm {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-.flagInput {
-  flex-grow: 1;
-  padding: 8px;
-}
-.submitButton {
-  padding: 8px 15px;
-  cursor: pointer;
-}
+.flagForm { display: flex; gap: 10px; margin-top: 20px; }
+.flagInput { flex-grow: 1; padding: 8px; }
+.submitButton { padding: 8px 15px; cursor: pointer; }
 
 /* Hint */
-.hintArea {
-  position: absolute;
-  bottom: 40%;
-  left: 30%;
-}
-.mascotContainer {
-  position: relative;
-  cursor: pointer;
-  width: 64px;
-  height: 64px;
-}
-.hintMascot {
-  width: 100%;
-}
-.speechBubble {
-  position: absolute;
-  width: 32px;
-  top: 0;
-  right: -15px;
-}
-.hintBox {
-  background-color: white;
-  border: 2px solid black;
-  padding: 15px;
-  margin: 10px 0 0 -50px;
-  max-width: 300px;
-  border-radius: 5px;
-}
+.hintArea { position: absolute; bottom: 40%; left: 30%; }
+.mascotContainer { position: relative; cursor: pointer; width: 64px; height: 64px; }
+.hintMascot { width: 100%; }
+.speechBubble { position: absolute; width: 32px; top: 0; right: -15px; }
+.hintBox { background-color: white; border: 2px solid black; padding: 15px; margin: 10px 0 0 -50px; max-width: 300px; border-radius: 5px; }
 
 /* Legend */
-.legend {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background-color: rgba(255, 250, 230, 0.85);
-  border: 2px solid #8B4513;
-  padding: 15px;
-  border-radius: 5px;
-}
-.legendItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-}
-.icon {
-  width: 32px;
-  height: 32px;
-  display: inline-block;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  image-rendering: pixelated;
-}
+.legend { position: absolute; bottom: 20px; left: 20px; background-color: rgba(255,250,230,0.85); border: 2px solid #8B4513; padding: 15px; border-radius: 5px; }
+.legendItem { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.icon { width: 32px; height: 32px; display: inline-block; background-size: contain; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; }
 
 /* --- Webshell --- */
 
-/* The side button sits at the left edge of the terminal,
-   which is the right edge of the viewport. It moves with the panel. */
+/* Side Toggle */
 .webshellToggle {
   position: fixed;
   top: 50%;
-  right: 0;                 /* stick to screen right */
+  right: 0;
   transform: translateY(-50%);
   z-index: 101;
   background-color: #333;
@@ -131,15 +58,12 @@
   padding: 12px 16px;
   font-weight: 700;
   cursor: pointer;
-  writing-mode: vertical-rl;     /* compact vertical label */
+  writing-mode: vertical-rl;
   text-orientation: mixed;
-  transform-origin: center;
   user-select: none;
 }
-.webshellToggle:disabled {
-  opacity: 0.7;
-  cursor: wait;
-}
+.webshellToggle:disabled { opacity: 0.7; cursor: wait; }
+.webshellToggleShifted { right: 50%; } /* keep on panel edge */
 
 /* Panel */
 .webshellContainer {
@@ -148,44 +72,50 @@
   background-color: #1e1e1e;
   position: fixed;
   top: 0;
-  right: -50%;                 /* hidden off-screen */
+  right: -50%;
   transition: right 0.3s ease-in-out;
   z-index: 99;
   padding: 20px;
   color: white;
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  box-shadow: -5px 0 15px rgba(0,0,0,0.5);
   display: flex;
   flex-direction: column;
+  overflow: hidden;                     /* isolate scroll inside body */
 }
-.webshellContainer.visible {
-  right: 0;                    /* slide in */
-}
+.webshellContainer.visible { right: 0; }
 
 .webshellHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #333;
-  font-family: sans-serif;
-  border-radius: 6px;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px; background-color: #333; font-family: sans-serif; border-radius: 6px;
+  flex: 0 0 auto;
 }
-.closeBtn {
-  background: #555;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 10px;
-  cursor: pointer;
+.closeBtn { background: #555; color: #fff; border: none; border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+
+/* Scroll host */
+.webshellBody {
+  flex: 1 1 auto;
+  min-height: 0;                        /* critical to allow overflow inside flex item */
+  margin-top: 10px;
+  overflow: auto;                        /* this area scrolls if needed */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;          /* prevent scroll chaining to the page */
 }
 
-.webshellBody {
-  flex-grow: 1;
-  height: 100%;
-  margin-top: 10px;
-}
-.webshellBody iframe {
+/* Iframe fills the scroll host; its own internal scroll is allowed.
+   The combination of .webshellBody + html{overscroll-behavior-y:none} (while open)
+   isolates wheel/touch scrolling to this panel. */
+.terminalFrame {
+  display: block;
   width: 100%;
   height: 100%;
   border: none;
+}
+
+.statusMsg { margin: 0; padding: 10px; }
+
+/* Mobile: full-width panel */
+@media (max-width: 900px) {
+  .webshellContainer { width: 100%; right: -100%; }
+  .webshellContainer.visible { right: 0; }
+  .webshellToggleShifted { right: 100%; }
 }

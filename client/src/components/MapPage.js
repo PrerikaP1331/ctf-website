@@ -1,17 +1,15 @@
 // client/src/components/MapPage.js
 
 import React, { useState, useEffect } from 'react';
-// === THIS LINE IS THE FIX ===
 import { useNavigate, Link } from 'react-router-dom';
 import styles from './MapPage.module.css';
 
-// Import all assets used in this component
+// Assets
 import mapBackgroundImage from '../images/sans-serriffe-map.png';
 import flagRed from '../icons/flag-red.gif';
 import flagGreen from '../icons/flag-green.gif';
 import speechBubbleIcon from '../icons/speech-bubble.png';
 import homeIcon from '../icons/home.png';
-import leaderboardIcon from '../icons/leaderboard.png';
 import cheatsheetIcon from '../icons/cheatsheet.png';
 
 function MapPage() {
@@ -26,9 +24,7 @@ function MapPage() {
       try {
         const token = localStorage.getItem('token');
         const headers = {};
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
-        }
+        if (token) headers['Authorization'] = `Bearer ${token}`;
 
         const response = await fetch('http://localhost:5000/api/map-data', { headers });
         const data = await response.json();
@@ -39,7 +35,7 @@ function MapPage() {
           setAttemptsMap(data.attemptsMap);
         }
       } catch (error) {
-        console.error("Failed to fetch map data:", error);
+        console.error('Failed to fetch map data:', error);
       } finally {
         setIsLoading(false);
       }
@@ -56,22 +52,19 @@ function MapPage() {
     alert(
       `Status for "${challenge.name}":\n\n` +
       `Difficulty: ${challenge.difficulty}\n` +
-      `Status: ${solvedChallengeIds.includes(challenge.challengeId) ? "Solved" : "Unsolved"}\n` +
+      `Status: ${solvedChallengeIds.includes(challenge.challengeId) ? 'Solved' : 'Unsolved'}\n` +
       `Attempts: ${attempts}`
     );
   };
 
-  if (isLoading) {
-    return <div>Loading Map...</div>;
-  }
+  if (isLoading) return <div>Loading Map...</div>;
 
   return (
     <div className={styles.pageWrapper}>
       <div
         className={styles.background}
         style={{ backgroundImage: `url(${mapBackgroundImage})` }}
-      ></div>
-
+      />
       <div className={styles.content}>
         <h1 className={styles.header}>Isles of Sans Seriffe</h1>
 
@@ -79,7 +72,7 @@ function MapPage() {
           Watch Story
         </div>
 
-        {challenges.map(challenge => {
+        {challenges.map((challenge) => {
           const isSolved = solvedChallengeIds.includes(challenge.challengeId);
           return (
             <div
@@ -105,17 +98,24 @@ function MapPage() {
 
         <div className={styles.legend}>
           <h3>Legend</h3>
-          {/* This Link tag will now work because it's imported */}
           <Link to="/map" className={styles.legendItem}>
-            <span className={styles.icon} style={{ backgroundImage: `url(${homeIcon})` }}></span>
+            <span
+              className={styles.icon}
+              style={{ backgroundImage: `url(${homeIcon})` }}
+            />
             <span>Home</span>
           </Link>
-          <a href="/leaderboard" target="_blank" rel="noopener noreferrer" className={styles.legendItem}>
-            <span className={styles.icon} style={{ backgroundImage: `url(${leaderboardIcon})` }}></span>
-            <span>Leaderboard</span>
-          </a>
-          <a href="/cheatsheet" target="_blank" rel="noopener noreferrer" className={styles.legendItem}>
-            <span className={styles.icon} style={{ backgroundImage: `url(${cheatsheetIcon})` }}></span>
+          {/* Leaderboard removed */}
+          <a
+            href="/cheatsheet"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.legendItem}
+          >
+            <span
+              className={styles.icon}
+              style={{ backgroundImage: `url(${cheatsheetIcon})` }}
+            />
             <span>Cheatsheet</span>
           </a>
         </div>
