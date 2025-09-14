@@ -10,7 +10,7 @@
 }
 
 .mainContent {
-  flex-grow: 1; 
+  flex-grow: 1;
   position: relative;
 }
 
@@ -58,24 +58,37 @@
   cursor: pointer;
 }
 
+/* Hint */
 .hintArea {
   position: absolute;
   bottom: 40%;
   left: 30%;
 }
-.hintMascot {
-  width: 64px; 
+.mascotContainer {
+  position: relative;
   cursor: pointer;
+  width: 64px;
+  height: 64px;
+}
+.hintMascot {
+  width: 100%;
+}
+.speechBubble {
+  position: absolute;
+  width: 32px;
+  top: 0;
+  right: -15px;
 }
 .hintBox {
   background-color: white;
   border: 2px solid black;
   padding: 15px;
-  margin-top: -20px; /* Overlap with the mascot slightly */
+  margin: 10px 0 0 -50px;
   max-width: 300px;
   border-radius: 5px;
 }
 
+/* Legend */
 .legend {
   position: absolute;
   bottom: 20px;
@@ -91,65 +104,6 @@
   gap: 10px;
   margin-top: 10px;
 }
-
-/* --- Webshell Styles --- */
-.webshellToggle {
-  position: fixed;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%) rotate(-90deg);
-  transform-origin: bottom right;
-  background-color: #333;
-  color: white;
-  padding: 10px 20px;
-  cursor: pointer;
-  z-index: 101;
-}
-
-.webshellContainer {
-  width: 50%; /* Takes up half the screen */
-  height: 100vh;
-  background-color: #1e1e1e;
-  position: fixed;
-  top: 0;
-  right: -50%; /* Start off-screen */
-  transition: right 0.3s ease-in-out;
-  z-index: 99;
-  padding: 20px;
-  color: white;
-  box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-}
-.webshellContainer.visible {
-  right: 0; /* Slide into view */
-}
-
-.mascotContainer {
-  position: relative; /* Anchor for the speech bubble */
-  cursor: pointer;
-  width: 64px; /* Same as the mascot */
-  height: 64px;
-}
-
-.hintMascot {
-  width: 100%;
-}
-
-.speechBubble {
-  position: absolute;
-  width: 32px;
-  top: 0;
-  right: -15px; 
-}
-
-.hintBox {
-  background-color: white;
-  border: 2px solid black;
-  padding: 15px;
-  margin: 10px 0 0 -50px; /* Position it relative to the container */
-  max-width: 300px;
-  border-radius: 5px;
-}
-
 .icon {
   width: 32px;
   height: 32px;
@@ -160,26 +114,78 @@
   image-rendering: pixelated;
 }
 
- .webshellContainer.visible {
-     right: 0;
- }
- 
- .webshellHeader {
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     padding: 10px;
-     background-color: #333;
-     font-family: sans-serif; /* Use a cleaner font for UI elements */
- }
- 
- .webshellBody {
-     flex-grow: 1;
-     height: 100%; /* Ensure it fills the container */
- }
- 
- .webshellBody iframe {
-     width: 100%;
-     height: 100%;
-     border: none;
- }
+/* --- Webshell --- */
+
+/* The side button sits at the left edge of the terminal,
+   which is the right edge of the viewport. It moves with the panel. */
+.webshellToggle {
+  position: fixed;
+  top: 50%;
+  right: 0;                 /* stick to screen right */
+  transform: translateY(-50%);
+  z-index: 101;
+  background-color: #333;
+  color: #fff;
+  border: 0;
+  border-radius: 8px 0 0 8px;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  writing-mode: vertical-rl;     /* compact vertical label */
+  text-orientation: mixed;
+  transform-origin: center;
+  user-select: none;
+}
+.webshellToggle:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* Panel */
+.webshellContainer {
+  width: 50%;
+  height: 100vh;
+  background-color: #1e1e1e;
+  position: fixed;
+  top: 0;
+  right: -50%;                 /* hidden off-screen */
+  transition: right 0.3s ease-in-out;
+  z-index: 99;
+  padding: 20px;
+  color: white;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+.webshellContainer.visible {
+  right: 0;                    /* slide in */
+}
+
+.webshellHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #333;
+  font-family: sans-serif;
+  border-radius: 6px;
+}
+.closeBtn {
+  background: #555;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.webshellBody {
+  flex-grow: 1;
+  height: 100%;
+  margin-top: 10px;
+}
+.webshellBody iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
