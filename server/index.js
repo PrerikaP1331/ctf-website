@@ -6,11 +6,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs'); 
 const jwt = require('jsonwebtoken');
 const Docker = require('dockerode');
+const path = require('path');
 const net = require('net'); 
 
-
-const docker = new Docker();
 const app = express();
+const docker = new Docker();
 const PORT = process.env.PORT || 5000;
 
 const Team = require('./models/Team'); 
@@ -18,6 +18,7 @@ const Challenge = require('./models/Challenge');
 
 app.use(cors());
 app.use(express.json());
+app.use('/files', express.static(path.join(__dirname, 'public/files')));
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log("MongoDB connected successfully."))
@@ -197,9 +198,11 @@ const activeContainers = new Map();// For the findFreePort helper
 // === WEBSHELL START ENDPOINT ===
 app.post('/api/webshell/start', async (req, res) => {
   // Authenticate the user first
+  console.log("Received a request to /api/webshell/start");
   const authHeader = req.headers['authorization'];
   if (!authHeader) return res.status(401).json({ error: 'No token provided' });
 
+   
   try {
     const token = authHeader.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -243,6 +246,8 @@ app.post('/api/webshell/start', async (req, res) => {
 
 // === WEBSHELL STOP ENDPOINT ===
 app.post('/api/webshell/stop', async (req, res) => {
+
+  console.log("Received a request to /api/webshell/stop");
   const authHeader = req.headers['authorization'];
   if (!authHeader) return res.status(401).json({ error: 'No token provided' });
   
