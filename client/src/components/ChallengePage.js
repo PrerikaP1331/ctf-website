@@ -221,7 +221,7 @@
 
 // export default ChallengePage;
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import styles from './ChallengePage.module.css';
 
@@ -232,7 +232,6 @@ import homeIcon from '../icons/home.png';
 import leaderboardIcon from '../icons/leaderboard.png';
 import cheatsheetIcon from '../icons/cheatsheet.png';
 
-
 function ChallengePage() {
   const { challengeId } = useParams();
   const navigate = useNavigate();
@@ -240,10 +239,14 @@ function ChallengePage() {
   const [challenge, setChallenge] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showHint, setShowHint] = useState(false);
+
+  // Webshell state
   const [showWebshell, setShowWebshell] = useState(false);
-  const [flagInput, setFlagInput] = useState('');
   const [terminalUrl, setTerminalUrl] = useState('');
   const [isTerminalLoading, setIsTerminalLoading] = useState(false);
+
+  // Other
+  const [flagInput, setFlagInput] = useState('');
   const [publicApiUrl, setPublicApiUrl] = useState('');
 
   useEffect(() => {
@@ -259,7 +262,7 @@ function ChallengePage() {
           navigate('/map');
         }
       } catch (error) {
-        console.error("Failed to fetch challenge:", error);
+        console.error('Failed to fetch challenge:', error);
       } finally {
         setIsLoading(false);
       }
@@ -267,54 +270,71 @@ function ChallengePage() {
     fetchChallenge();
   }, [challengeId, navigate]);
 
-    const openTerminal = async () => {
-    // Don't do anything if a terminal is already loading or loaded
-    if (terminalUrl || isTerminalLoading) return;
-
+  const openTerminal = useCallback(async () => {
+    if (terminalUrl || isTerminalLoading) return; // already running or starting
     setIsTerminalLoading(true);
     const token = localStorage.getItem('token');
     try {
-        const response = await fetch('http://localhost:5000/api/webshell/start', {
+      const response = await fetch('http://localhost:5000/api/webshell/start', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await response.json();
-
-        if (data.url) {
-        setTerminalUrl(data.url); // Set the URL for the iframe
-        } else {
-        console.error("Failed to get terminal URL:", data.error);
-        }
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (data.url) {
+        setTerminalUrl(data.url);
+      } else {
+        console.error('Failed to get terminal URL:', data.error);
+      }
     } catch (err) {
-        console.error("Error fetching terminal:", err);
+      console.error('Error fetching terminal:', err);
     } finally {
-        setIsTerminalLoading(false);
+      setIsTerminalLoading(false);
     }
-    };
+  }, [terminalUrl, isTerminalLoading]);
 
-    const closeTerminal = async () => {
-    if (!terminalUrl) return; // No terminal to close
-
+  const stopTerminal = useCallback(async () => {
+    if (!terminalUrl) return;
     const token = localStorage.getItem('token');
     try {
-        await fetch('http://localhost:5000/api/webshell/stop', {
+      await fetch('http://localhost:5000/api/webshell/stop', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
-        });
+        headers: { Authorization: `Bearer ${token}` },
+      });
     } catch (err) {
-        console.error("Error stopping terminal:", err);
+      console.error('Error stopping terminal:', err);
     } finally {
-        // Clear the URL regardless of success
-        setTerminalUrl('');
-        setShowWebshell(false); // Also close the panel
+      setTerminalUrl('');
     }
+  }, [terminalUrl]);
+
+  // Stop container when leaving the page
+  useEffect(() => {
+    return () => {
+      stopTerminal().catch(() => {});
     };
+  }, [stopTerminal]);
+
+  // Open/close PANEL only (non-destructive). Start terminal on first open.
+  const handleTogglePanel = async () => {
+    if (isTerminalLoading) return; // prevent race during boot
+    const willOpen = !showWebshell;
+    setShowWebshell(willOpen);
+    if (willOpen && !terminalUrl) {
+      await openTerminal();
+    }
+  };
+
+  const handleHardClose = async () => {
+    // Close panel AND stop container
+    setShowWebshell(false);
+    await stopTerminal();
+  };
 
   const handleFlagSubmit = async (event) => {
     event.preventDefault();
     const token = localStorage.getItem('token');
     if (!token) {
-      alert("You are not logged in!");
+      alert('You are not logged in!');
       return navigate('/');
     }
     try {
@@ -322,21 +342,21 @@ function ChallengePage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           challengeId: challenge.challengeId,
-          flag: flagInput
-        })
+          flag: flagInput,
+        }),
       });
       const data = await response.json();
       alert(data.message);
-      if (data.success && data.message !== "Already solved!") {
+      if (data.success && data.message !== 'Already solved!') {
         navigate('/map');
       }
     } catch (error) {
-      console.error("Error submitting flag:", error);
-      alert("An error occurred.");
+      console.error('Error submitting flag:', error);
+      alert('An error occurred.');
     }
   };
 
@@ -354,16 +374,25 @@ function ChallengePage() {
             <span>{challenge.difficulty}</span>
           </div>
           <p className={styles.description}>{challenge.description}</p>
+
           {challenge.downloadFile && (
             <>
-              <a href={`${publicApiUrl}/files/${challenge.downloadFile}`} download className={styles.downloadLink}>
+              <a
+                href={`${publicApiUrl}/files/${challenge.downloadFile}`}
+                download
+                className={styles.downloadLink}
+              >
                 &lt;&lt;Download {challenge.downloadFile}&gt;&gt;
               </a>
               <p>
-                In webshell, use: <code>curl {publicApiUrl}/files/{challenge.downloadFile} -o {challenge.downloadFile}</code>
+                In webshell, use:{' '}
+                <code>
+                  curl {publicApiUrl}/files/{challenge.downloadFile} -o {challenge.downloadFile}
+                </code>
               </p>
             </>
           )}
+
           <form onSubmit={handleFlagSubmit} className={styles.flagForm}>
             <input
               type="text"
@@ -372,30 +401,22 @@ function ChallengePage() {
               onChange={(e) => setFlagInput(e.target.value)}
               placeholder="flag{...}"
             />
-            <button type="submit" className={styles.submitButton}>Submit</button>
+            <button type="submit" className={styles.submitButton}>
+              Submit
+            </button>
           </form>
         </div>
 
         {/* Hint Area */}
         <div className={styles.hintArea}>
-          <div
-            className={styles.mascotContainer}
-            onClick={() => setShowHint(!showHint)}
-          >
-            <img
-              src={butterflyIcon}
-              alt="Hint Mascot"
-              className={styles.hintMascot}
-            />
-            <img
-              src={speechBubbleIcon}
-              alt="Show Hint"
-              className={styles.speechBubble}
-            />
+          <div className={styles.mascotContainer} onClick={() => setShowHint(!showHint)}>
+            <img src={butterflyIcon} alt="Hint Mascot" className={styles.hintMascot} />
+            <img src={speechBubbleIcon} alt="Show Hint" className={styles.speechBubble} />
           </div>
           {showHint && (
             <div className={styles.hintBox}>
-              <strong>Hint:</strong> This is a placeholder hint. You might want to use a specific tool. Check the cheatsheet!
+              <strong>Hint:</strong> This is a placeholder hint. You might want to use a specific tool.
+              Check the cheatsheet!
             </div>
           )}
         </div>
@@ -418,34 +439,42 @@ function ChallengePage() {
         </div>
       </div>
 
-        {/* Webshell Toggle and Container */}
-        <div
-        className={styles.webshellToggle}
-        onClick={() => {
-            // Toggle the panel visibility
-            const newWebshellState = !showWebshell;
-            setShowWebshell(newWebshellState);
-            // If we are opening the panel and have no terminal yet, get one
-            if (newWebshellState && !terminalUrl) {
-            openTerminal();
-            }
-        }}
-        >
-        </div>
+      {/* Side Toggle Button (sticks to the left edge of the panel) */}
+      <button
+        className={`${styles.webshellToggle} ${showWebshell ? styles.webshellToggleShifted : ''}`}
+        onClick={handleTogglePanel}
+        disabled={isTerminalLoading}
+        aria-pressed={showWebshell}
+        aria-label={showWebshell ? 'Close webshell panel' : 'Open webshell panel'}
+        title={showWebshell ? 'Close webshell' : 'Open webshell'}
+      >
+        {isTerminalLoading ? 'Starting…' : showWebshell ? 'Close Webshell' : 'Open Webshell'}
+      </button>
 
-        <div className={`${styles.webshellContainer} ${showWebshell ? styles.visible : ''}`}>
+      {/* Webshell Panel */}
+      <div className={`${styles.webshellContainer} ${showWebshell ? styles.visible : ''}`}>
         <div className={styles.webshellHeader}>
-            <span>Kali Linux Terminal</span>
-            {/* The "X" button now properly closes the session */}
-            <button onClick={closeTerminal}>X</button>
+          <span>Kali Linux Terminal</span>
+          <div className={styles.headerBtns}>
+            {/* Hard stop kills the container */}
+            <button onClick={handleHardClose} className={styles.closeBtn} title="Stop and close">
+              X
+            </button>
+          </div>
         </div>
         <div className={styles.webshellBody}>
-            {isTerminalLoading && <p>Loading Terminal...</p>}
-            {terminalUrl && !isTerminalLoading && (
-            <iframe src={terminalUrl} title="CTF Webshell Terminal"></iframe>
-            )}
+          {isTerminalLoading && <p>Loading Terminal...</p>}
+          {terminalUrl && !isTerminalLoading && (
+            <iframe src={terminalUrl} title="CTF Webshell Terminal" />
+          )}
+          {!terminalUrl && !isTerminalLoading && showWebshell && (
+            <div className={styles.emptyState}>
+              <p>Terminal is not running.</p>
+              <button onClick={openTerminal} className={styles.restartBtn}>Start Terminal</button>
+            </div>
+          )}
         </div>
-        </div>
+      </div>
     </div>
   );
 }
