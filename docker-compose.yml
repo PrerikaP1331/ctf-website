@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  # ctf-backend:
+  #   build: ./server
+  #   container_name: ctf-backend-server
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   environment:
+  #     - MONGODB_URI=${MONGODB_URI}
+  #     - JWT_SECRET=${JWT_SECRET}
+  #     - PUBLIC_API_URL=${PUBLIC_API_URL}
+  #   dns:
+  #     - 8.8.8.8
+  #   networks:
+  #     - ctf-net
+
+  web-challenge-1:
+    build: ../WEB-CHALLENGE-1
+    container_name: web-1
+    ports:
+      - "8000:80"

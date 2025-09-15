@@ -1,0 +1,33 @@
+#!/bin/bash
+
+clear
+
+echo "──────▄▀▀▀▀▀▀▀▄───────"
+echo "─────▐─▄█▀▀▀█▄─▌──────"
+echo "─────▐─▀█▄▄▄█▀─▌──────"
+echo "──────▀▄▄▄▄▄▄▄▀───────"
+echo "─────▐▀▄▄▐█▌▄▄▀▌──────"
+echo "──────▀▄▄███▄▄▀───────"
+echo "█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█"
+echo "█░░╦─╦╔╗╦─╔╗╔╗╔╦╗╔╗░░█"
+echo "█░░║║║╠─║─║─║║║║║╠─░░█"
+echo "█░░╚╩╝╚╝╚╝╚╝╚╝╩─╩╚╝░░█"
+echo "█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█"
+echo ""
+
+echo "Initiation program retrieved successfully."
+echo "Final confirmation required to proceed."
+echo ""
+
+read -p "Are you ready to begin your quest? (yes/no): " choice
+
+if [[ "${choice,,}" == "yes" ]]; then
+  echo ""
+  echo "Confirmation accepted. Welcome, challenger."
+  echo "Your first flag is: flag{w3lc0me_t0_th3_r3scu3_m1ss10n}"
+  echo ""
+else
+  echo ""
+  echo "Return when you are ready to begin the rite."
+  echo ""
+fi

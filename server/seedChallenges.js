@@ -5,13 +5,13 @@ const Challenge = require('./models/Challenge.js');
 const challengesToCreate = [
   {
     challengeId: 1,
-    name: 'Welcome Aboard!',
-    description: 'A simple warm-up to get your sea legs. The flag is given to you in the description!',
+    name:'Initiation Rite',
+    description: 'M2 has linked up with Nisbot\'s command center. Before we can proceed, we need to bring you, our third teammate, online. Run the initiation program to establish the link. In the webshell, run: curl <link to file> ',
     category: 'General',
     difficulty: 'Welcome',
     points: 0,
-    flag: 'flag{w3lc0m3_t0_s4ns_s3r1ff3}',
-    downloadFile:'',
+    flag: 'flag{w3lc0me_t0_th3_r3scu3_m1ss10n}',
+    downloadFile:'server\public\files\initiate',
     position: { top: '25%', left: '65%' } // Top right
   },
   {
