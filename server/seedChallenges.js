@@ -6,12 +6,12 @@ const challengesToCreate = [
   {
     challengeId: 1,
     name:'Initiation Rite',
-    description: 'M2 has linked up with Nisbot\'s command center. Before we can proceed, we need to bring you, our third teammate, online. Run the initiation program to establish the link. In the webshell, run: curl <link to file> ',
+    description: 'M2 has linked up with Nisbot\'s command center. Before we can proceed, we need to bring you, our third teammate, online. Run the initiation program to establish the link. In the webshell, run: curl http://host.docker.internal:5000/files/initiate -o initiate',
     category: 'General',
     difficulty: 'Welcome',
     points: 0,
     flag: 'flag{w3lc0me_t0_th3_r3scu3_m1ss10n}',
-    downloadFile:'server\public\files\initiate',
+    downloadFile:'initiate',
     position: { top: '25%', left: '65%' } // Top right
   },
   {

@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Docker = require('dockerode');
 const net = require('net');
+const path = require('path');
 
 const docker = new Docker();
 const app = express();
@@ -17,6 +18,8 @@ const Challenge = require('./models/Challenge');
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/files', express.static(path.join(__dirname, 'public','files')));
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected successfully.'))

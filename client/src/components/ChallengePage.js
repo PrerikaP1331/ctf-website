@@ -390,19 +390,13 @@ function ChallengePage() {
 
           {challenge.downloadFile && (
             <>
-              <a
-                href={`${publicApiUrl}/files/${challenge.downloadFile}`}
-                download
+              <a 
+                href={`http://localhost:5000/files/${challenge.downloadFile}`} 
+                download 
                 className={styles.downloadLink}
               >
-                &lt;&lt;Download {challenge.downloadFile}&gt;&gt;
+                Download {challenge.downloadFile};
               </a>
-              <p>
-                In webshell, use:{' '}
-                <code>
-                  curl {publicApiUrl}/files/{challenge.downloadFile} -o {challenge.downloadFile}
-                </code>
-              </p>
             </>
           )}
 

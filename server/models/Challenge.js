@@ -33,6 +33,10 @@ const ChallengeSchema = new Schema({
     required: true,
     select: false
   },
+  downloadFile: {
+    type: String,
+    required: false // It's not required for every challenge
+  },
   position: {
     top: { type: String, required: true }, 
     left: { type: String, required: true } 
