@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y \
     python3 python3-pip git \
     netcat-traditional \
     curl wget \
+    unzip\
     nmap \
     dirb \
     # Web Exploitation
@@ -39,6 +40,7 @@ RUN apt-get update && apt-get install -y \
     # Forensics
     binwalk \
     binutils \
+    foremost \
     # Cryptography
     john \
     hashcat \

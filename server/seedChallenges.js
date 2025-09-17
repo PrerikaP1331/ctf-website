@@ -16,13 +16,13 @@ const challengesToCreate = [
   },
   {
     challengeId: 2,
-    name: 'Ancient Runes',
-    description: 'This strange text was found carved into a rock. Can you decipher it? ZmxhZ3tiNHMzXzY0X2lzX24wdF9zM2NyM3R9',
-    category: 'Cryptography',
-    difficulty: 'Warm-up',
-    points: 0,
-    flag: 'flag{b4s3_64_is_n0t_s3cr3t}',
-    downloadFile:'',
+    name: 'Ghost in the Drive',
+    description: 'M1 wiped the ship\'s logs to cover its tracks! The data might still be lingering on this damaged drive image. Find the deleted log file to uncover M1\'s next move. In the webshell, use: curl http://host.docker.internal:5000/files/usb_drive.dd.vhd -o usb_drive.dd.vhd',
+    category: 'Forensics',
+    difficulty: 'Easy',
+    points: 25,
+    flag: 'flag{d3l3t3d_d4t4_n3v3r_d13s}',
+    downloadFile:'usb_drive.dd.vhd',
     position: { top: '45%', left: '70%' } // Middle right
   },
   {
@@ -39,7 +39,7 @@ const challengesToCreate = [
   {
     challengeId: 4,
     name: 'Message in a Bottle',
-    description: 'We found a bottle with a note, but the ink is faded. Maybe there\'s another layer to this image?',
+    description: 'The secure data archive M2 unlocked contains two files: a strange visual data transmission from the island\'s creators (arecibo.png) and an encrypted log file (log.txt). The file notes simply say, \'The transmission holds the key to the log.\'',
     category: 'Steganography',
     difficulty: 'Easy',
     points: 50,
@@ -51,13 +51,13 @@ const challengesToCreate = [
   // ----- Left Island (Caissa Superiore) -----
   {
     challengeId: 5,
-    name: 'The Rickety Bridge',
-    description: 'This old login portal seems insecure. Can you bypass the authentication?',
-    category: 'Web',
+    name: 'The Arecibo Anomaly',
+    description: 'The secure data archive M2 unlocked contains two files: a strange visual data transmission from the island\'s creators (arecibo.png) and an encrypted log file (log.txt). The file notes simply say, \'The transmission holds the key to the log.\'',
+    category: 'Steganography',
     difficulty: 'Easy',
     points: 50,
-    flag: 'flag{sql_1nj3cti0n_ftw}',
-    downloadFile:'',
+    flag: 'flag{v1g3n3r3_c1ph3r_1s_cl4ss1c}',
+    downloadFile:'arecibo_anomaly.zip',
     position: { top: '15%', left: '30%' } // Top left
   },
   {
