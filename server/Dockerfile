@@ -54,6 +54,15 @@ RUN apt-get update && apt-get install -y \
     # Clean up apt caches to keep the image size down
     rm -rf /var/lib/apt/lists/*
 
+# --- COMPILE WHITESPACE INTERPRETER ---
+# Clone the official repository for the 'wspace' interpreter
+RUN git clone https://github.com/wspace/wspace.git /opt/wspace && \
+    # Navigate into the directory
+    cd /opt/wspace && \
+    # Run the make command to compile the 'wspace' executable
+    make && \
+    # Create a symbolic link so the 'wspace' command is available everywhere
+    ln -s /opt/wspace/wspace /usr/local/bin/wspace
 
 # Set ZSH as the default shell for the root user
 RUN chsh -s /bin/zsh root

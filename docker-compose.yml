@@ -1,24 +1,47 @@
 version: '3.8'
 
 services:
-  # ctf-backend:
-  #   build: ./server
-  #   container_name: ctf-backend-server
-  #   ports:
-  #     - "5000:5000"
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   environment:
-  #     - MONGODB_URI=${MONGODB_URI}
-  #     - JWT_SECRET=${JWT_SECRET}
-  #     - PUBLIC_API_URL=${PUBLIC_API_URL}
-  #   dns:
-  #     - 8.8.8.8
-  #   networks:
-  #     - ctf-net
+  ctf-backend:
+    build: ./server
+    container_name: ctf-backend-server
+    ports:
+      - "5000:5000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - PUBLIC_API_URL=${PUBLIC_API_URL}
+    dns:
+      - 8.8.8.8
+    networks:
+      - ctf_net
 
   web-challenge-1:
     build: ../WEB-CHALLENGE-1
-    container_name: web-1
+    container_name: deceptive-web
     ports:
       - "8000:80"
+    networks:
+      - ctf_net
+
+  unfiltered_ping:
+    build: ../UNFILTERED_PING 
+    container_name: unfiltered_ping
+    ports:
+      - "9000:80"
+    networks:
+      - ctf_net
+
+  cookie_jar:
+    build: ../COOKIE-CHALLENGE
+    container_name: cookie_jar
+    ports:
+      - "10000:80"
+    networks:
+      - ctf_net
+
+networks:
+  ctf_net:
+    driver: bridge
+  
