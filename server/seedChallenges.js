@@ -112,7 +112,7 @@ const challengesToCreate = [
     difficulty: 'Hard',
     points: 150,
     flag: 'flag{g1t_h1st0ry_1s_f0r3v3r}',
-    downloadFile:'',
+    downloadFile:'leaky_repo.zip',
     position: { top: '55%', left: '40%' } // Bottom-middle left
   }
 ];
