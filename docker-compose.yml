@@ -18,7 +18,7 @@ services:
       - ctf_net
 
   web-challenge-1:
-    build: ../WEB-CHALLENGE-1
+    build: ./web-challenge-1
     container_name: deceptive-web
     ports:
       - "8000:80"
@@ -26,7 +26,7 @@ services:
       - ctf_net
 
   unfiltered_ping:
-    build: ../UNFILTERED_PING 
+    build: ./unfiltered_ping
     container_name: unfiltered_ping
     ports:
       - "9000:80"
@@ -34,7 +34,7 @@ services:
       - ctf_net
 
   cookie_jar:
-    build: ../COOKIE-CHALLENGE
+    build: ./cookie-challenge
     container_name: cookie_jar
     ports:
       - "10000:80"

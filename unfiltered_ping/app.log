@@ -1,0 +1,6 @@
+[INFO] 2025-09-16T18:00:00Z - Server starting...
+[INFO] 2025-09-16T18:00:01Z - Listening on port 80.
+[DEBUG] 2025-09-16T18:05:21Z - Received ping request for ip=8.8.8.8
+[DEBUG] 2025-09-16T18:05:24Z - Ping successful.
+[DEBUG] 2025-09-16T18:09:45Z - Received ping request for ip=127.0.0.1
+[DEBUG] 2025-09-16T18:09:48Z - Ping successful.
