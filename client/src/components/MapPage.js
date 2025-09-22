@@ -254,7 +254,7 @@ function MapPage() {
           </Link>
           {/* Leaderboard removed */}
           <a
-            href="/cheatsheet"
+            href="https://drive.google.com/drive/folders/1BUNbkVoGFlAfkQSRIzzfNNqCcYnojjM0?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.legendItem}
