@@ -6,11 +6,14 @@
   background-position: center;
   padding: 30px;
   display: flex;
-  font-family: 'Courier New', Courier, monospace;
-  overflow: auto;                 /* page can scroll when clicking outside panel */
+  font-family: "Press Start 2P", system-ui;
+  background-attachment: fixed;
 }
 
-.mainContent { flex-grow: 1; position: relative; }
+.mainContent { 
+  flex-grow: 1; 
+  position: relative; 
+}
 
 .challengeBox {
   background-color: rgba(230, 245, 255, 0.9);
@@ -18,29 +21,122 @@
   border-radius: 8px;
   padding: 20px;
   max-width: 500px;
+  font-size: 0.7em;
+  color: black;
 }
 
-.header { display: flex; gap: 10px; margin-bottom: 15px; }
-.header span { background-color: #cce0ff; padding: 5px 10px; border-radius: 15px; font-size: 0.9em; }
+.challengeBox h1 {
+  font-size: 2em; /* Make the main title larger */
+  margin-bottom: 20px;
+  color: darkgreen;
+}
 
-.description { margin: 15px 0; }
-.downloadLink { display: block; margin-top: 10px; color: #004d99; }
+.header { 
+  display: flex; 
+  gap: 10px; 
+  margin-bottom: 15px; 
+}
 
-.flagForm { display: flex; gap: 10px; margin-top: 20px; }
-.flagInput { flex-grow: 1; padding: 8px; }
-.submitButton { padding: 8px 15px; cursor: pointer; }
+.header span { 
+  background-color: #cce0ff; 
+  padding: 5px 10px; 
+  border-radius: 15px; 
+  font-size: 0.9em; 
+}
+
+.description { 
+  margin: 15px 0; 
+}
+
+.downloadLink { 
+  display: block; 
+  margin-top: 10px; 
+  color: #004d99; 
+}
+
+.flagForm { 
+  display: flex; 
+  gap: 10px; 
+  margin-top: 20px; 
+}
+
+.flagInput { 
+  flex-grow: 1; 
+  padding: 8px; 
+  font-family: "Press Start 2P", system-ui;
+  font-size: 0.8em;
+}
+
+.submitButton { 
+  padding: 8px 15px; 
+  cursor: pointer; 
+  font-family: "Press Start 2P", system-ui;
+  font-size: 0.8em;
+}
 
 /* Hint */
-.hintArea { position: absolute; bottom: 40%; left: 30%; }
-.mascotContainer { position: relative; cursor: pointer; width: 64px; height: 64px; }
-.hintMascot { width: 100%; }
-.speechBubble { position: absolute; width: 32px; top: 0; right: -15px; }
-.hintBox { background-color: white; border: 2px solid black; padding: 15px; margin: 10px 0 0 -50px; max-width: 300px; border-radius: 5px; }
+.hintArea { 
+  position: absolute; 
+  bottom: 40%; 
+  left: 30%; 
+}
+
+.mascotContainer { 
+  position: relative; 
+  cursor: pointer; 
+  width: 64px; 
+  height: 64px; 
+}
+
+.hintMascot { 
+  width: 100%; 
+}
+
+.speechBubble { 
+  position: absolute; 
+  width: 32px; top: 0; 
+  right: -15px; 
+}
+
+.hintBox { 
+  background-color: white; 
+  border: 2px solid black; 
+  padding: 15px; 
+  margin: 10px 0 0 -50px; 
+  max-width: 300px; 
+  border-radius: 5px; 
+  font-size: 0.6em;
+  color: black;
+}
 
 /* Legend */
-.legend { position: absolute; bottom: 20px; left: 20px; background-color: rgba(255,250,230,0.85); border: 2px solid #8B4513; padding: 15px; border-radius: 5px; }
-.legendItem { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-.icon { width: 32px; height: 32px; display: inline-block; background-size: contain; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; }
+.legend {
+  position: absolute;
+  bottom: 5px;
+  left: 10px;
+  background-color: rgba(242, 238, 220, 0.687);
+  border: 2px solid #8B4513;
+  padding: 15px;
+  border-radius: 5px;
+  font-family: "Press Start 2P", system-ui;
+  color:purple;
+  font-size: 0.8em;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.icon {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+}
 
 /* --- Webshell --- */
 
@@ -62,8 +158,15 @@
   text-orientation: mixed;
   user-select: none;
 }
-.webshellToggle:disabled { opacity: 0.7; cursor: wait; }
-.webshellToggleShifted { right: 50%; } /* keep on panel edge */
+
+.webshellToggle:disabled { 
+  opacity: 0.7; 
+  cursor: wait; 
+}
+
+.webshellToggleShifted { 
+  right: 50%;
+} /* keep on panel edge */
 
 /* Panel */
 .webshellContainer {
@@ -82,14 +185,30 @@
   flex-direction: column;
   overflow: hidden;                     /* isolate scroll inside body */
 }
-.webshellContainer.visible { right: 0; }
+
+.webshellContainer.visible { 
+  right: 0; 
+}
 
 .webshellHeader {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px; background-color: #333; font-family: sans-serif; border-radius: 6px;
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  padding: 10px; 
+  background-color: #333; 
+  font-family: sans-serif; 
+  border-radius: 6px;
   flex: 0 0 auto;
 }
-.closeBtn { background: #555; color: #fff; border: none; border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+
+.closeBtn { 
+  background: #555; 
+  color: #fff; 
+  border: none; 
+  border-radius: 6px; 
+  padding: 6px 10px; 
+  cursor: pointer; 
+}
 
 /* Scroll host */
 .webshellBody {
@@ -111,7 +230,10 @@
   border: none;
 }
 
-.statusMsg { margin: 0; padding: 10px; }
+.statusMsg { 
+  margin: 0; 
+  padding: 10px; 
+}
 
 /* Mobile: full-width panel */
 @media (max-width: 900px) {

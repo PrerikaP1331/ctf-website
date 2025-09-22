@@ -1,4 +1,52 @@
 /* client/src/components/LoginPage.module.css */
+.pageContainer {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Prevents scrollbars */
+  position: relative; /* Anchor for all the corner elements */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 20px;
+  box-sizing: border-box; /* This stops the background from scrolling */
+}
+
+.loginFormWrapper {
+  position: absolute;
+  bottom: 40px; /* Adjust vertical position from bottom */
+  left: 40px;   /* Adjust horizontal position from left */
+}
+
+.topLeft {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.topRight {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.bottomRight {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.logo {
+  height: 60px; /* Adjust logo size as needed */
+  width: auto;
+}
+
+.mainTitle {
+  font-family: "Press Start 2P", system-ui;
+  font-size: 1.5em; /* Adjust size as needed */
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
 .loginContainer {
   display: flex;
   justify-content: center;
@@ -6,29 +54,49 @@
   height: 100vh;
   font-family: sans-serif;
 }
+
 .loginForm {
+  font-family: "Press Start 2P", system-ui;
   display: flex;
   flex-direction: column;
   gap: 15px;
   padding: 40px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: #0b1e48;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 }
+
 .loginForm h1 {
   text-align: center;
   margin: 0 0 10px;
 }
+
+.loginForm h2 {
+  text-align: center;
+  margin: 0 0 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 .loginForm input {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 .loginForm button {
+  font-family: "Press Start 2P", system-ui;
   padding: 10px;
-  border: none;
+  border: 1px solid #ffffff;
   border-radius: 4px;
-  background-color: #e0e0e0;
+  background-color: #0b1e48;
   cursor: pointer;
   font-weight: bold;
+  transition: box-shadow 0.2s ease-in-out;
+  color: #ffffff;
+}
+
+.loginForm button:hover {
+  box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.4);
 }

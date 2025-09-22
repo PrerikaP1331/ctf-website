@@ -12,7 +12,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // --- DYNAMIC HOMEPAGE LOGIC ---
 app.get('/', (req, res) => {
   let isAdmin = false;
-
+  console.log('\n--- New Request to Homepage (/) ---');
+  console.log('Incoming cookie:', req.cookies.session || 'None'); 
   // Check if the user has a valid admin cookie
   if (req.cookies.session) {
     try {
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
     // If no cookie, set the default non-admin one
     const defaultSession = { username: 'guest', isAdmin: false };
     const cookieValue = Buffer.from(JSON.stringify(defaultSession)).toString('base64');
+    console.log('No cookie found. Setting default guest cookie:', cookieValue);
     res.cookie('session', cookieValue);
   }
 
@@ -53,7 +55,10 @@ app.get('/admin', (req, res) => {
   }
   try {
     const decodedJson = Buffer.from(sessionCookie, 'base64').toString('utf8');
+     console.log('Decoded cookie data:', decodedJson);
     const sessionData = JSON.parse(decodedJson);
+    console.log('\n--- New Request to /admin ---');
+  console.log('Received cookie for admin check:', sessionCookie);
     if (sessionData.isAdmin === true) {
       res.send('<h1>Admin Panel</h1><p>Welcome, admin! Here is your flag: <strong>flag{cl13nt_s1de_c0ntr0ls_4re_n0t_s3cure}</strong></p>');
     } else {

@@ -1,0 +1,12 @@
+/* client/src/index.css */
+body {
+  margin: 0;
+
+  /* Optional: Set a default background and text color for the whole app */
+  background-color: #2c2c2c;
+  color: #f0f0f0;
+}
+
+code {
+  font-family: "Press Start 2P", system-ui;
+}

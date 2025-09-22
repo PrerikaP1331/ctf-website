@@ -23,6 +23,10 @@ function VideoPage() {
   return (
     <div className={styles.videoContainer}>
       <div className={styles.videoWrapper}>
+
+        <div className={styles.titleContainer}>
+          <h1 className={styles.title}>Previously as seen in Rev Coding...</h1>
+        </div>
         <video
           ref={videoRef} 
           className={styles.videoPlayer}

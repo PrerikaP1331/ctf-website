@@ -422,8 +422,9 @@ function ChallengePage() {
           </div>
           {showHint && (
             <div className={styles.hintBox}>
-              <strong>Hint:</strong> This is a placeholder hint. You might want to use a specific tool.
-              Check the cheatsheet!
+              <strong>Hint:</strong> 
+              {/* --- CHANGE THIS LINE --- */}
+              {challenge.hint || "No hint available for this challenge."}
             </div>
           )}
         </div>

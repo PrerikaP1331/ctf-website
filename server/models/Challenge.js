@@ -37,6 +37,10 @@ const ChallengeSchema = new Schema({
     type: String,
     required: false // It's not required for every challenge
   },
+  hint: {
+    type: String,
+    required: false // Not every challenge might have a hint
+  },
   position: {
     top: { type: String, required: true }, 
     left: { type: String, required: true } 
