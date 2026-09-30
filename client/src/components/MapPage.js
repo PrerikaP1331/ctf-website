@@ -160,7 +160,7 @@ function MapPage() {
         const headers = {};
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        const response = await fetch('http://localhost:5000/api/map-data', { headers });
+        const response = await fetch('/api/map-data', { headers });
         const data = await response.json();
 
         if (data.success) {

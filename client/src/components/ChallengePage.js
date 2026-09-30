@@ -233,11 +233,12 @@ import speechBubbleIcon from '../icons/speech-bubble.png';
 import homeIcon from '../icons/home.png';
 import cheatsheetIcon from '../icons/cheatsheet.png';
 
-const challengeSitePorts = {
-  3: 9000,
-  4: 10000,
-  8: 8000,
+const challengeSitePaths = {
+  3: '/challenge-sites/unfiltered-ping/',
+  4: '/challenge-sites/cookie-jar/',
+  8: '/challenge-sites/web-challenge-1/',
 };
+const webshellEnabled = process.env.REACT_APP_WEBSHELL_ENABLED === 'true';
 
 function ChallengePage() {
   const { challengeId } = useParams();
@@ -260,7 +261,7 @@ function ChallengePage() {
     const fetchChallenge = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost:5000/api/challenge/${challengeId}`);
+        const response = await fetch(`/api/challenge/${challengeId}`);
         const data = await response.json();
         if (data.success) {
           setChallenge(data.challenge);
@@ -298,7 +299,7 @@ function ChallengePage() {
     setIsTerminalLoading(true);
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:5000/api/webshell/start', {
+      const response = await fetch('/api/webshell/start', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -319,7 +320,7 @@ function ChallengePage() {
     if (!terminalUrl) return;
     const token = localStorage.getItem('token');
     try {
-      await fetch('http://localhost:5000/api/webshell/stop', {
+      await fetch('/api/webshell/stop', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -360,7 +361,7 @@ function ChallengePage() {
       return navigate('/');
     }
     try {
-      const response = await fetch('http://localhost:5000/api/challenge/submit', {
+      const response = await fetch('/api/challenge/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -385,9 +386,8 @@ function ChallengePage() {
   if (isLoading) return <div>Loading Challenge...</div>;
   if (!challenge) return <div>Challenge not found.</div>;
 
-  const apiBaseUrl = (publicApiUrl || 'http://localhost:5000').replace(/\/+$/, '');
   const fileUrl = challenge.downloadFile
-    ? `${apiBaseUrl}/files/${encodeURIComponent(challenge.downloadFile)}`
+    ? `${window.location.origin}/files/${encodeURIComponent(challenge.downloadFile)}`
     : '';
   const curlFileUrl = fileUrl ? new URL(fileUrl) : null;
   if (curlFileUrl && ['localhost', '127.0.0.1', '::1'].includes(curlFileUrl.hostname)) {
@@ -396,9 +396,9 @@ function ChallengePage() {
   const curlCommand = curlFileUrl
     ? `curl -fL "${curlFileUrl.href}" -o "${challenge.downloadFile}"`
     : '';
-  const challengePort = challengeSitePorts[challenge.challengeId];
-  const challengeUrl = challengePort
-    ? `${window.location.protocol}//${window.location.hostname}:${challengePort}`
+  const challengePath = challengeSitePaths[challenge.challengeId];
+  const challengeUrl = challengePath
+    ? new URL(challengePath, window.location.origin).href
     : '';
 
   return (
@@ -502,6 +502,8 @@ function ChallengePage() {
       </div>
 
       {/* Side Toggle Button */}
+      {webshellEnabled && (
+      <>
       <button
         className={`${styles.webshellToggle} ${showWebshell ? styles.webshellToggleShifted : ''}`}
         onClick={handleTogglePanel}
@@ -530,6 +532,8 @@ function ChallengePage() {
           )}
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }

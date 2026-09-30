@@ -2,7 +2,7 @@ const express = require('express');
 const { exec } = require('child_process');// Import the 'exec' function
 const path = require('path'); 
 const app = express();
-const PORT = 80;
+const PORT = process.env.PORT || 80;
 
 app.use(express.static(path.join(__dirname, 'public')));
 

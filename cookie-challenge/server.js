@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const PORT = 80;
+const PORT = process.env.PORT || 80;
 
 app.use(cookieParser());
 

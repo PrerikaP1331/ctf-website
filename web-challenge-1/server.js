@@ -44,7 +44,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const PORT = 80;
+const PORT = process.env.PORT || 80;
 
 // This correctly serves index.html and the GIF from the public root.
 app.use(express.static(path.join(__dirname, 'public')));

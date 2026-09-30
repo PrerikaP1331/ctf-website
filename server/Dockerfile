@@ -3,6 +3,10 @@
 # Start from the official, up-to-date Kali Linux base image
 FROM kalilinux/kali-rolling
 
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN sed -i 's|http://http.kali.org/kali/|http://archive.kali.org/kali/|' /etc/apt/sources.list.d/kali.sources
+
 # Set the Environment PATH to ensure all system tools can be found by commands.
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 ENV TERM=xterm-256color \
@@ -20,9 +24,9 @@ RUN chmod +x /usr/local/bin/ttyd
 
 # --- Install Kali Tools ---
 # Update package lists and install your comprehensive list of CTF tools.
-RUN apt-get update && apt-get install -y \
+RUN apt-get update -o Acquire::Retries=3 && apt-get install -y --no-install-recommends \
     # General & All-Purpose
-    python3 python3-pip git \
+    python3 python3-pip git ca-certificates \
     netcat-traditional \
     curl wget \
     unzip\
@@ -32,21 +36,15 @@ RUN apt-get update && apt-get install -y \
     sqlmap \
     gobuster \
     nikto \
-    # Reverse Engineering
-    radare2 \
-    # Binary Exploitation (Pwn)
+    # Debugging and binary utilities
     gdb \
-    python3-pwntools \
     # Forensics
-    binwalk \
     binutils \
     foremost \
     # Cryptography
     john \
-    hashcat \
     # Steganography
     steghide \
-    libimage-exiftool-perl \
     # Dependencies for other tools
     build-essential \
     zsh \
@@ -74,11 +72,17 @@ RUN echo 'setopt PROMPT_SUBST' > /root/.zshrc && \
     echo 'PROMPT+=$'"'"'\\n%F{green}└─%F{red}%#%f '"'"'' >> /root/.zshrc && \
     echo 'cd /home/ctf-user' >> /root/.zshrc
 
+RUN useradd --create-home --uid 10001 --shell /bin/zsh ctf-user && \
+    printf 'cd /home/ctf-user\n' > /home/ctf-user/.zshrc && \
+    chown -R ctf-user:ctf-user /home/ctf-user
+
 # Use Azure's PORT env when present (fallback to 8080)
 ENV PORT=8080
 
 # Expose the port the app listens on
 EXPOSE 8080
+
+USER ctf-user
 
 # Start ttyd with ZSH as the default Kali shell for proper prompt
 CMD ["ttyd", "-p", "8080", "--client-option", "rendererType=webgl","-i", "0.0.0.0", "-W", "-t", "titleFixed=Kali Linux Terminal", "zsh"]
