@@ -22,7 +22,7 @@ function LoginPage() {
 
       if (data.success) {
         localStorage.setItem('token', data.token);
-        navigate('/story');
+        navigate('/map');
       } else {
         alert(data.message);
       }
@@ -75,7 +75,7 @@ function LoginPage() {
 
       {/* Bottom-right corner for the CTF title */}
       <div className={styles.bottomRight}>
-        <span className={styles.mainTitle}>RUBIX CTF 2025</span>
+        <span className={styles.mainTitle}>RUBIX CTF 2.0</span>
       </div>
     </div>
   );

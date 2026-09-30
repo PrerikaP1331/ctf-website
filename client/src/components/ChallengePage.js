@@ -233,6 +233,12 @@ import speechBubbleIcon from '../icons/speech-bubble.png';
 import homeIcon from '../icons/home.png';
 import cheatsheetIcon from '../icons/cheatsheet.png';
 
+const challengeSitePorts = {
+  3: 9000,
+  4: 10000,
+  8: 8000,
+};
+
 function ChallengePage() {
   const { challengeId } = useParams();
   const navigate = useNavigate();
@@ -275,11 +281,14 @@ function ChallengePage() {
   useEffect(() => {
     const root = document.documentElement;
     if (showWebshell) {
+      root.style.overflow = 'hidden';
       root.style.overscrollBehaviorY = 'none';
     } else {
+      root.style.overflow = '';
       root.style.overscrollBehaviorY = '';
     }
     return () => {
+      root.style.overflow = '';
       root.style.overscrollBehaviorY = '';
     };
   }, [showWebshell]);
@@ -376,6 +385,22 @@ function ChallengePage() {
   if (isLoading) return <div>Loading Challenge...</div>;
   if (!challenge) return <div>Challenge not found.</div>;
 
+  const apiBaseUrl = (publicApiUrl || 'http://localhost:5000').replace(/\/+$/, '');
+  const fileUrl = challenge.downloadFile
+    ? `${apiBaseUrl}/files/${encodeURIComponent(challenge.downloadFile)}`
+    : '';
+  const curlFileUrl = fileUrl ? new URL(fileUrl) : null;
+  if (curlFileUrl && ['localhost', '127.0.0.1', '::1'].includes(curlFileUrl.hostname)) {
+    curlFileUrl.hostname = 'host.docker.internal';
+  }
+  const curlCommand = curlFileUrl
+    ? `curl -fL "${curlFileUrl.href}" -o "${challenge.downloadFile}"`
+    : '';
+  const challengePort = challengeSitePorts[challenge.challengeId];
+  const challengeUrl = challengePort
+    ? `${window.location.protocol}//${window.location.hostname}:${challengePort}`
+    : '';
+
   return (
     <div className={styles.pageContainer} style={{ backgroundImage: `url(${forestBg})` }}>
       <div className={styles.mainContent}>
@@ -388,16 +413,40 @@ function ChallengePage() {
           </div>
           <p className={styles.description}>{challenge.description}</p>
 
-          {challenge.downloadFile && (
-            <>
-              <a 
-                href={`http://localhost:5000/files/${challenge.downloadFile}`} 
-                download 
-                className={styles.downloadLink}
+          {challenge.challengeId === 10 && challenge.downloadFile && (
+            <section className={styles.descriptionDownload}>
+              <p>Download the repository from the Kali terminal:</p>
+              <pre className={styles.curlCommand}><code>{curlCommand}</code></pre>
+            </section>
+          )}
+
+          {challengeUrl && (
+            <section className={styles.resourceSection}>
+              <h2 className={styles.resourceHeading}>Challenge website</h2>
+              <a
+                href={challengeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.challengeSiteLink}
               >
-                Download {challenge.downloadFile};
+                Open challenge site
               </a>
-            </>
+            </section>
+          )}
+
+          {challenge.downloadFile && (
+            <section className={styles.resourceSection}>
+              <h2 className={styles.resourceHeading}>Challenge file</h2>
+              <a href={fileUrl} download className={styles.downloadLink}>
+                Download {challenge.downloadFile}
+              </a>
+              {challenge.challengeId !== 10 && (
+                <>
+                  <p className={styles.curlLabel}>Download with curl</p>
+                  <pre className={styles.curlCommand}><code>{curlCommand}</code></pre>
+                </>
+              )}
+            </section>
           )}
 
           <form onSubmit={handleFlagSubmit} className={styles.flagForm}>

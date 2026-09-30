@@ -10,6 +10,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+COPY var/secret/flag.txt /var/secret/flag.txt
 
 EXPOSE 80
 

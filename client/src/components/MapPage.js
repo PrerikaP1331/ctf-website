@@ -68,11 +68,7 @@
 //         style={{ backgroundImage: `url(${mapBackgroundImage})` }}
 //       />
 //       <div className={styles.content}>
-//         <h1 className={styles.header}>Isles of Sans Seriffe</h1>
-
-//         <div className={styles.watchStory} onClick={() => navigate('/story')}>
-//           Watch Story
-//         </div>
+//         <h1 className={styles.header}>Challenge Map</h1>
 
 //         {challenges.map((challenge) => {
 //           const isSolved = solvedChallengeIds.includes(challenge.challengeId);
@@ -124,7 +120,7 @@
 
 //         <div className={styles.bottomleft}>
 //         <img src={nisbCsLogo} alt="NISB CS Logo" className={styles.logo} />
-//         <span className={styles.ctfTitle}>RUBIX CTF 2025</span>
+//         <span className={styles.ctfTitle}>RUBIX CTF 2.0</span>
 //        </div>
 
 //       </div>
@@ -204,11 +200,7 @@ function MapPage() {
         style={{ backgroundImage: `url(${mapBackgroundImage})` }}
       />
       <div className={styles.content}>
-        <h1 className={styles.header}>Isles of Sans Seriffe</h1>
-
-        <div className={styles.watchStory} onClick={() => navigate('/story')}>
-          Watch Story
-        </div>
+        <h1 className={styles.header}>Challenge Map</h1>
 
         {challenges.map((challenge) => {
           const isSolved = solvedChallengeIds.includes(challenge.challengeId);
@@ -269,7 +261,7 @@ function MapPage() {
 
         <div className={styles.bottomleft}>
         <img src={nisbCsLogo} alt="NISB CS Logo" className={styles.logo} />
-        <span className={styles.ctfTitle}>RUBIX CTF 2025</span>
+        <span className={styles.ctfTitle}>RUBIX CTF 2.0</span>
        </div>
 
       </div>

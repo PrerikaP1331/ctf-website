@@ -7,8 +7,6 @@ const PORT = 80;
 
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'public')));
-
 // --- DYNAMIC HOMEPAGE LOGIC ---
 app.get('/', (req, res) => {
   let isAdmin = false;
@@ -46,6 +44,8 @@ app.get('/', (req, res) => {
     res.send(finalHtml);
   });
 });
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // --- ADMIN PAGE LOGIC (Unchanged) ---
 app.get('/admin', (req, res) => {

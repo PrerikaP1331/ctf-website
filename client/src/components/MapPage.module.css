@@ -60,17 +60,6 @@
   font-family: "Press Start 2P", system-ui;
 }
 
-.watchStory {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  cursor: pointer;
-  font-family: "Press Start 2P", system-ui;
-  color: lightblue;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-
-}
-
 .legend {
   position: absolute;
   bottom: 5px;

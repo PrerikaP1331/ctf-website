@@ -63,16 +63,38 @@ app.get('/file', (req, res) => {
 
   // THE FIX:
   // We read the file and explicitly tell Node.js to encode it as a 'utf8' string.
-  fs.readFile(vulnerablePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
+  fs.stat(vulnerablePath, (statError, stats) => {
+    if (statError) {
+      console.error(statError);
       return res.status(404).send('File not found');
     }
-    
-    // When Express receives a string that starts with '<html>',
-    // it automatically sets the Content-Type to text/html and tells the browser
-    // to render it. This is the most reliable method.
-    res.send(data);
+
+    if (stats.isDirectory()) {
+      return fs.readdir(vulnerablePath, (readError, entries) => {
+        if (readError) {
+          console.error(readError);
+          return res.status(500).send('Unable to list directory');
+        }
+
+        const basePath = path.join(__dirname, 'public');
+        const relativePath = path.relative(basePath, vulnerablePath);
+        const links = entries.map((entry) => {
+          const entryPath = path.join(relativePath, entry).split(path.sep).join('/');
+          return `<li><a href="/file?name=${encodeURIComponent(entryPath)}">${entry}</a></li>`;
+        }).join('');
+
+        return res.type('html').send(`<h1>Index of /${relativePath}</h1><ul>${links}</ul>`);
+      });
+    }
+
+    fs.readFile(vulnerablePath, 'utf8', (readError, data) => {
+      if (readError) {
+        console.error(readError);
+        return res.status(404).send('File not found');
+      }
+
+      res.type('html').send(data);
+    });
   });
 });
 
