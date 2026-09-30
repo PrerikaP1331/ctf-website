@@ -24,7 +24,7 @@ const challengesToCreate = [
     points: 50,
     flag: 'flag{d3l3t3d_d4t4_n3v3r_d13s}',
     downloadFile:'usb_drive.dd.vhd',
-    hint:'To get the flag, unravel the web of strings this spider has spun around it!',
+    hint:'You may forget the past but not erase it',
     position: { top: '48%', left: '65%' } 
   },
   {
@@ -46,7 +46,7 @@ const challengesToCreate = [
     category: 'Web Exploitation',
     difficulty: 'Medium',
     points: 100,
-    flag: 'flag{h1dd3n_1n_pl41n_s1ght}',
+    flag: 'flag{cl13nt_s1de_c0ntr0ls_4re_n0t_s3cure}',
     downloadFile:'',
     hint:'Some cookie eating sessions are reserved for the creator alone. But you could always change and pretend to be one yourself to snag a fortune. Huh, is this what they mean when they say fortune cookies?',
     position: { top: '38%', left: '26%' }
@@ -92,13 +92,13 @@ const challengesToCreate = [
   {
     challengeId: 8,
     name: 'Not everything is what it looks like',
-    description: 'The final museum artifact is this \'Master Schematic\' image. It\'s supposed to contain the location of the Repair Bay, but it\'s locked down tight. ',
+    description: 'An asset viewer hides the Master Schematic behind a file-reading endpoint. Inspect the page source and discover how it chooses which file to serve. Can you reach a backup outside its public folder?',
     category: 'Forensics, Web exploitation',
     difficulty: 'Hard',
     points: 150,
-    flag: 'flag{d1r3ct0ry_tr4v3rs4l_f0r_th3_w1n}',
+      flag: 'flag{d1r3ctory_tr4v3rs4l_ftw}',
     downloadFile:'',
-    hint:'Whenever I don\'t find my other sock, I look in directories before and after it.',
+    hint:'Try a relative path that moves up from the public folder with ../ and points into the backups directory.',
     position: { top: '85%', left: '34%' }
   },
   {
@@ -108,7 +108,7 @@ const challengesToCreate = [
     category: 'Miscellaneous',
     difficulty: 'Easy',
     points: 50,
-    flag: 'flag{1nv1s1bl3_c0de_1s_st1ll_c0de}',
+      flag: 'flag{wh1t3sp4c3_c0d3_1s_st1ll_c0d3}',
     downloadFile:'echoes_in_the_void.ws',
     hint: 'Even that which is written in whitespaces can speak volumes.',
     position: { top: '70%', left: '18%' }

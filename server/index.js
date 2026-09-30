@@ -108,8 +108,16 @@ app.post('/api/challenge/submit', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Team or Challenge not found' });
     }
 
+    const submission = team.submissions.find(s => s.challenge.equals(challenge._id));
+    if (submission) {
+      submission.count += 1;
+    } else {
+      team.submissions.push({ challenge: challenge._id, count: 1 });
+    }
+
     const alreadySolved = team.solvedChallenges.some(s => s.challenge.equals(challenge._id));
     if (alreadySolved) {
+      await team.save();
       return res.json({ success: true, message: 'Already solved!' });
     }
 
@@ -121,9 +129,6 @@ app.post('/api/challenge/submit', async (req, res) => {
       return res.json({ success: true, message: 'Flag Captured!' });
     }
 
-    // record submission attempts
-    const sub = team.submissions.find(s => s.challenge.equals(challenge._id));
-    sub ? sub.count++ : team.submissions.push({ challenge: challenge._id, count: 1 });
     await team.save();
 
     res.json({ success: false, message: 'Incorrect Flag!' });
@@ -152,6 +157,13 @@ app.post('/api/webshell/start', async (req, res) => {
     const container = await docker.createContainer({
       Image: 'kali-ctf-webshell',
       Tty: false,
+      Cmd: [
+        'ttyd', '-p', '8080',
+        '--client-option', 'rendererType=webgl',
+        '--client-option', 'scrollback=5000',
+        '-i', '0.0.0.0', '-W',
+        '-t', 'titleFixed=Kali Linux Terminal', 'zsh'
+      ],
       HostConfig: {
         PortBindings: { '8080/tcp': [{ HostPort: String(hostPort) }] },
         Memory: 512 * 1024 * 1024,
