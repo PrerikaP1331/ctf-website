@@ -12,10 +12,19 @@ const path = require('path');
 const docker = new Docker();
 const app = express();
 const PORT = process.env.PORT || 5000;
+const MAX_SESSION_SECONDS = 60 * 60;
 
 const Team = require('./models/Team');
 const Challenge = require('./models/Challenge');
 const webshellProxy = httpProxy.createProxyServer({ changeOrigin: true });
+
+function verifySessionToken(token) {
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  if (!Number.isInteger(decoded.iat) || !Number.isInteger(decoded.exp) || decoded.exp - decoded.iat > MAX_SESSION_SECONDS) {
+    throw new Error('Session exceeds the one-hour limit.');
+  }
+  return decoded;
+}
 
 app.use(express.json());
 
@@ -41,12 +50,33 @@ app.post('/api/login', async (req, res) => {
     if (!isMatch) return res.status(401).json({ success: false, message: 'Invalid username or password' });
 
     const payload = { teamId: team._id, username: team.username };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '3h' });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.status(200).json({ success: true, token });
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.get('/api/leaderboard', async (req, res) => {
+  const authHeader = req.headers.authorization || '';
+  if (!authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ success: false, message: 'Authentication required' });
+  }
+
+  try {
+    const decoded = verifySessionToken(authHeader.slice(7));
+    if (decoded.username !== process.env.LEADERBOARD_ADMIN_USERNAME) {
+      return res.status(403).json({ success: false, message: 'Organizer access required' });
+    }
+
+    const leaderboard = await Team.find({})
+      .select('username score solvedChallenges')
+      .sort({ score: -1, 'solvedChallenges.timestamp': 1 });
+    res.json({ success: true, leaderboard });
+  } catch (err) {
+    res.status(401).json({ success: false, message: 'Invalid or expired session' });
   }
 });
 
@@ -61,7 +91,7 @@ app.get('/api/map-data', async (req, res) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = verifySessionToken(token);
     const team = await Team.findById(decoded.teamId).populate('solvedChallenges.challenge');
 
     const solvedChallengeIds = team
@@ -105,7 +135,7 @@ app.post('/api/challenge/submit', async (req, res) => {
     if (!authHeader) return res.status(401).json({ success: false, message: 'No token provided' });
 
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = verifySessionToken(token);
 
     const team = await Team.findById(decoded.teamId);
     const challenge = await Challenge.findOne({ challengeId }).select('+flag');
@@ -147,7 +177,7 @@ app.post('/api/challenge/submit', async (req, res) => {
 const activeContainers = new Map();
 const terminalSessions = new Map();
 const terminalSessionCookie = 'ctf_terminal';
-const terminalSessionLifetime = 3 * 60 * 60 * 1000;
+const terminalSessionLifetime = 60 * 60 * 1000;
 
 function getCookieValue(header, name) {
   const prefix = `${name}=`;
@@ -200,7 +230,7 @@ app.post('/api/webshell/start', async (req, res) => {
 
   try {
     const token = authHeader.split(' ')[1];
-    const { teamId: decodedTeamId } = jwt.verify(token, process.env.JWT_SECRET);
+    const { teamId: decodedTeamId } = verifySessionToken(token);
     const teamId = String(decodedTeamId);
 
     if (activeContainers.has(teamId)) {
@@ -280,7 +310,7 @@ app.post('/api/webshell/stop', async (req, res) => {
   if (!authHeader) return res.status(401).json({ error: 'No token provided' });
   try {
     const token = authHeader.split(' ')[1];
-    const { teamId: decodedTeamId } = jwt.verify(token, process.env.JWT_SECRET);
+    const { teamId: decodedTeamId } = verifySessionToken(token);
     const teamId = String(decodedTeamId);
 
     await stopWebshell(teamId);

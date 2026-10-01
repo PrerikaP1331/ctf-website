@@ -1,2 +1,51 @@
-<h1>Network Tool UI - Under Construction</h1>
-<p>Please use the API endpoint at /api/ping.</p>
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Unfiltered Ping</title>
+	<style>
+		:root { color-scheme: dark; font-family: system-ui, sans-serif; }
+		body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #101827; color: #eef5ff; }
+		main { width: min(680px, calc(100% - 32px)); padding: 28px; border: 1px solid #35516e; border-radius: 12px; background: #17283b; box-shadow: 0 18px 50px #07101bcc; }
+		h1 { margin-top: 0; color: #8ee6c4; }
+		p { color: #b9c9d8; }
+		form { display: flex; gap: 10px; flex-wrap: wrap; }
+		label { flex: 1 1 360px; }
+		input, button { box-sizing: border-box; width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #55738f; font: inherit; }
+		input { background: #0d1825; color: #fff; }
+		button { width: auto; cursor: pointer; background: #8ee6c4; color: #10251f; border-color: #8ee6c4; font-weight: 700; }
+		pre { min-height: 100px; padding: 14px; overflow: auto; white-space: pre-wrap; background: #08111c; border-radius: 6px; color: #d8e9f8; }
+	</style>
+</head>
+<body>
+	<main>
+		<h1>Unfiltered Ping</h1>
+		<p>Run a network diagnostic against the command server.</p>
+		<form id="ping-form">
+			<label>
+				Target
+				<input id="target" name="ip" value="127.0.0.1" autocomplete="off" required>
+			</label>
+			<button type="submit">Run ping</button>
+		</form>
+		<pre id="output" aria-live="polite">Results will appear here.</pre>
+	</main>
+	<script>
+		const form = document.getElementById('ping-form');
+		const target = document.getElementById('target');
+		const output = document.getElementById('output');
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			output.textContent = 'Running...';
+			try {
+				const response = await fetch(`api/ping?ip=${encodeURIComponent(target.value)}`);
+				const text = await response.text();
+				output.innerHTML = text;
+			} catch (error) {
+				output.textContent = `Request failed: ${error.message}`;
+			}
+		});
+	</script>
+</body>
+</html>

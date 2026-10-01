@@ -1,0 +1,13 @@
+.sessionTimer {
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	z-index: 120;
+	padding: 8px 10px;
+	border: 1px solid rgba(255, 255, 255, 0.55);
+	border-radius: 4px;
+	background: rgba(16, 34, 56, 0.92);
+	color: #fff;
+	font: 600 13px/1.2 system-ui, sans-serif;
+	font-variant-numeric: tabular-nums;
+}

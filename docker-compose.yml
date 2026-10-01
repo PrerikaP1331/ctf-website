@@ -29,6 +29,7 @@ services:
     environment:
       MONGODB_URI: mongodb://127.0.0.1:27017/rubixctf
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
+      LEADERBOARD_ADMIN_USERNAME: ${LEADERBOARD_ADMIN_USERNAME:-demo_test}
       PUBLIC_API_URL: ${PUBLIC_API_URL:-}
       WEBSHELL_ENABLED: "true"
       PORT: "5000"

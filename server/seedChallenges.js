@@ -66,18 +66,6 @@ const challengesToCreate = [
     position: { top: '53%', left: '24%' }
   },
   {
-    challengeId: 6,
-    name: 'The Tyrant\'s Portrait',
-    description: 'Inside the Museum Room, you find this imposing portrait of BB82 as a ruler. It feels... off. We suspect BB82 hid something inside the image itself to mock us."',
-    category: 'Steganography',
-    difficulty: 'Easy',
-    points: 50,
-    flag: 'flag{m1x1ng_my_st3g0_t3chn1qu3s}',
-    downloadFile:'',
-    hint:'',
-    position: { top: '55%', left: '36%' }
-  },
-  {
     challengeId: 7,
     name: 'The Sous-Chef\'s Secret',
     description: 'A cryptic message, believed to be the final note of a brilliant chef, was found within a peculiar data file. It is a layered masterpiece, but the instructions to unravel its secrets are nowhere to be found. Only by uncovering the correct method can you reveal the chef\'s final message',
